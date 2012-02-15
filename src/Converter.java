@@ -1,12 +1,19 @@
 import java.io.*;
 import com.aspose.cells.*;
 
+// java -cp '.:lib/*:' Converter
+
 public class Converter {
 
 	public static void main(String[] args) throws Exception {
 		
+		// store parameters
+		String input_file = args[0];
+		
+		System.out.println("Processing " + input_file);
+		
 		// open workbook
-		Workbook workbook = new Workbook("E:\\Documents\\Office\\Book1.xlsx");
+		Workbook workbook = new Workbook(args[0]);
 		
 		// get all of the worksheets
 		WorksheetCollection worksheets = workbook.getWorksheets();
