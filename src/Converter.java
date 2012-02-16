@@ -1,37 +1,37 @@
-import java.io.*;
-import com.aspose.cells.*;
 
-// java -cp '.:lib/*:' Converter
+import java.io.*;
+
+import managers.file.RoutingManager;
+import managers.database.MongoManager;
+
 
 public class Converter {
 
 	public static void main(String[] args) throws Exception {
 		
-		// store parameters
-		String input_file = args[0];
-		
-		System.out.println("Processing " + input_file);
-		
-		// open workbook
-		Workbook workbook = new Workbook(args[0]);
-		
-		// get all of the worksheets
-		WorksheetCollection worksheets = workbook.getWorksheets();
-		
-		// print all sheet names
-		for (int x = 0; x < worksheets.getCount(); x++) {
+		if (args.length == 1) {
 			
-			// get worksheet object
-			Worksheet worksheet = worksheets.get(x);
+			// store the file id
+			String file_id = args[0];
 			
-			// print worksheet name
-			System.out.println(worksheet.getName());
+			if (file_id.length() > 0) {
+				
+				MongoManager m = new MongoManager();
+				
+				// get the requested file's binary data
+				ByteArrayInputStream file_stream = m.GetFile(file_id);
+				
+				// feed the data to the document converter
+				RoutingManager r = new RoutingManager(file_stream);
+				
+				ByteArrayOutputStream pdf_stream = r.GetPDF();
+				
+				System.out.println(pdf_stream);
+				
+			}
 			
 		}
 		
-		// save pdf to byte array stream
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		workbook.save(output, FileFormatType.PDF);
 	}
 
 }
