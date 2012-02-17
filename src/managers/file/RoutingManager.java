@@ -9,28 +9,28 @@ import managers.file.ExcelManager;
 
 public class RoutingManager {
 
-	private ByteArrayInputStream m_file_stream;
+	private byte[] m_file_data_native;
 	
-	public RoutingManager(ByteArrayInputStream file_stream) {
+	public RoutingManager(byte[] file_data_native) {
 		
-		this.m_file_stream = file_stream;
+		this.m_file_data_native = file_data_native;
 		
 	}
 	
-	public ByteArrayOutputStream GetPDF() throws Exception {
+	public byte[] GetPDF() throws Exception {
 		
 		return Route();
 		
 	}
 	
-	private ByteArrayOutputStream Route() throws Exception {
+	private byte[] Route() throws Exception {
+		
+		// move the file data into an input stream
+		ByteArrayInputStream file_stream = new ByteArrayInputStream(this.m_file_data_native);
 		
 		// proof of concept with excel only
-		ExcelManager x = new ExcelManager(this.m_file_stream);
-		
-		ByteArrayOutputStream pdf_stream = x.GetPDF();
-		
-		return pdf_stream;
+		ExcelManager x = new ExcelManager(file_stream);
+		return x.GetPDF();
 		
 	}
 

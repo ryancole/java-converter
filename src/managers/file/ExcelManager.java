@@ -8,18 +8,21 @@ import com.aspose.cells.*;
 
 public class ExcelManager {
 	
-	private ByteArrayInputStream m_file_stream;
+	private ByteArrayInputStream m_file_data_native;
 	
-	public ExcelManager(ByteArrayInputStream file_stream) throws Exception {
+	public ExcelManager(ByteArrayInputStream file_data_native) throws Exception {
 		
-		this.m_file_stream = file_stream;
+		this.m_file_data_native = file_data_native;
 		
 	}
 	
-	public ByteArrayOutputStream GetPDF() throws Exception {
+	public byte[] GetPDF() throws Exception {
 		
 		// open workbook
-		Workbook workbook = new Workbook(this.m_file_stream);
+		Workbook workbook = new Workbook(this.m_file_data_native);
+		
+		// set font path
+		// workbook.getSaveOptions().setFontPath(new String[]{ "/usr/share/fonts/truetype/msttcorefonts" });
 		
 		// get all of the worksheets
 		WorksheetCollection worksheets = workbook.getWorksheets();
@@ -39,7 +42,7 @@ public class ExcelManager {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		workbook.save(output, FileFormatType.PDF);
 		
-		return output;
+		return output.toByteArray();
 	}
 	
 }
