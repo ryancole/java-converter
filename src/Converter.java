@@ -24,9 +24,11 @@ public class Converter {
 				// feed the data to the document converter
 				RoutingManager r = new RoutingManager(file_stream);
 				
+				// get the pdf binary data
 				ByteArrayOutputStream pdf_stream = r.GetPDF();
 				
-				System.out.println(pdf_stream);
+				// put the pdf data into the database
+				m.PutFile(pdf_stream);
 				
 			}
 			

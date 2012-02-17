@@ -41,4 +41,12 @@ public class MongoManager {
 		
 	}
 
+	public void PutFile(ByteArrayInputStream pdf_data) throws Exception {
+		
+		GridFSInputFile write_stream = this.m_collection.createFile(pdf_data);
+		write_stream.setFilenae("what.pdf");
+		write_stream.save();
+
+	}
+
 }
