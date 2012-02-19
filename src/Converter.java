@@ -10,15 +10,6 @@ public class Converter {
 
 	public static void main(String[] args) throws Exception {
 		
-		Properties p = System.getProperties();
-		Enumeration keys = p.keys();
-		
-		while (keys.hasMoreElements()) {
-			String key = (String)keys.nextElement();
-			String value = (String)p.get(key);
-			System.out.println(key + ": " + value);
-		}
-		
 		if (args.length == 1) {
 			
 			// store the file id
