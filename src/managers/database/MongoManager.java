@@ -16,6 +16,7 @@ public class MongoManager {
 	private Mongo m_connection;
 	private DB m_database;
 	private GridFS m_collection;
+	private String m_filename;
 	
 	public MongoManager() throws Exception {
 		
@@ -29,18 +30,26 @@ public class MongoManager {
 		
 		// get the file from the database
 		GridFSDBFile f = this.m_collection.findOne(new ObjectId(file_id));
+		
+		// stores the filename
+		this.m_filename = f.getFilename();
+		
+		// return file contents
 		return IOUtils.toByteArray(f.getInputStream());
 		
 	}
 
-	public void PutFile(byte[] pdf_data) throws Exception {
+	public ObjectId PutFile(byte[] pdf_data) throws Exception {
 		
+		// get database write stream
 		GridFSInputFile write_stream = this.m_collection.createFile(pdf_data);
-		write_stream.setFilename("what.pdf");
+		
+		// set filename and save
+		write_stream.setFilename(this.m_filename + ".pdf");
 		write_stream.save();
-
-		ObjectId new_id = new ObjectId(write_stream.getId().toString());
-		System.out.println(new_id.toString());
+		
+		// return new objectid
+		return new ObjectId(write_stream.getId().toString());
 
 	}
 

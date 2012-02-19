@@ -22,7 +22,7 @@ public class ExcelManager {
 		Workbook workbook = new Workbook(this.m_file_data_native);
 		
 		// set font path
-		// workbook.getSaveOptions().setFontPath(new String[]{ "/usr/share/fonts/truetype/msttcorefonts" });
+		CellsHelper.setFontDir("/usr/share/fonts/truetype/msttcorefonts");
 		
 		// get all of the worksheets
 		WorksheetCollection worksheets = workbook.getWorksheets();
@@ -33,8 +33,8 @@ public class ExcelManager {
 			// get worksheet object
 			Worksheet worksheet = worksheets.get(x);
 			
-			// print worksheet name
-			System.out.println(worksheet.getName());
+			// make this worksheet visible
+			worksheet.setVisible(true);
 			
 		}
 		
