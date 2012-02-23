@@ -18,7 +18,7 @@ public class ExcelManager {
 		
 		// set aspose license
 		m_license = new License();
-		m_license.setLicense("/Users/ryan/Documents/github/java-converter/bin/lib/Aspose.Total.Java.lic");
+		m_license.setLicense("/usr/local/litigance/converter/lib/Aspose.Total.Java.lic");
 		
 	}
 	
@@ -28,7 +28,7 @@ public class ExcelManager {
 		Workbook workbook = new Workbook(this.m_file_data_native);
 		
 		// set font path
-		// CellsHelper.setFontDir("/usr/share/fonts/truetype/msttcorefonts");
+		CellsHelper.setFontDir("/usr/share/fonts/truetype/msttcorefonts");
 		
 		// get all of the worksheets
 		WorksheetCollection worksheets = workbook.getWorksheets();
@@ -45,6 +45,16 @@ public class ExcelManager {
 			// auto fit columns
 			worksheet.autoFitColumns();
 			worksheet.autoFitRows();
+			
+			PageSetup pagesetup = worksheet.getPageSetup();
+			
+			// page setup options
+			pagesetup.setFitToPagesWide(1);
+			pagesetup.setBlackAndWhite(false);
+			pagesetup.setCenterHorizontally(false);
+			pagesetup.setCenterVertically(false);
+			pagesetup.setOrder(PrintOrderType.OVER_THEN_DOWN);
+			pagesetup.setPrintGridlines(true);
 			
 		}
 		
