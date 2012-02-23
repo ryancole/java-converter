@@ -17,9 +17,8 @@ public class ExcelManager {
 		this.m_file_data_native = file_data_native;
 		
 		// set aspose license
-		FileInputStream license_stream = new FileInputStream("Aspose.Total.Java.lic");
 		m_license = new License();
-		m_license.setLicense(license_stream);
+		m_license.setLicense("/Users/ryan/Documents/github/java-converter/bin/lib/Aspose.Total.Java.lic");
 		
 	}
 	
@@ -29,7 +28,7 @@ public class ExcelManager {
 		Workbook workbook = new Workbook(this.m_file_data_native);
 		
 		// set font path
-		CellsHelper.setFontDir("/usr/share/fonts/truetype/msttcorefonts");
+		// CellsHelper.setFontDir("/usr/share/fonts/truetype/msttcorefonts");
 		
 		// get all of the worksheets
 		WorksheetCollection worksheets = workbook.getWorksheets();
@@ -45,16 +44,13 @@ public class ExcelManager {
 			
 			// auto fit columns
 			worksheet.autoFitColumns();
-			
-			// page setup options
-			PageSetup pagesetup = worksheet.getPageSetup();
-			
-			pagesetup.setFitToPagesWide(1);
+			worksheet.autoFitRows();
 			
 		}
 		
-		// save pdf to byte array stream
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+		// save pdf to byte array stream
 		workbook.save(output, FileFormatType.PDF);
 		
 		return output.toByteArray();
