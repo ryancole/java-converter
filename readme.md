@@ -4,8 +4,8 @@ This is an example of how to use the Java version of Aspose to convert Excel fil
 
 # Building
 
-Build with `javac Converter.java -d ../bin -classpath '.:../bin/lib/*:'`.
+Build the JAR file by running the `build.sh` script.
 
 # Running
 
-Run with `java -cp '.:lib/*:' Converter`.
+The JAR file will be placed in `/usr/local/litigance/bin`.
