@@ -14,38 +14,37 @@ import org.apache.commons.io.*;
 public class MongoManager {
 
 	private Mongo m_connection;
-	private DB m_database;
 	private GridFS m_collection;
-	private String m_filename;
+	private GridFSDBFile m_file;
 	
 	public MongoManager() throws Exception {
 		
-		this.m_connection = new Mongo("127.0.0.1");
-		this.m_database = m_connection.getDB("litigance");
-		this.m_collection = new GridFS(m_database);
+		m_connection = new Mongo("127.0.0.1");
+		m_collection = new GridFS(m_connection.getDB("litigance"));
 		
 	}
 	
 	public byte[] GetFile(String file_id) throws Exception {
 		
 		// get the file from the database
-		GridFSDBFile f = this.m_collection.findOne(new ObjectId(file_id));
-		
-		// stores the filename
-		this.m_filename = f.getFilename();
+		m_file = m_collection.findOne(new ObjectId(file_id));
 		
 		// return file contents
-		return IOUtils.toByteArray(f.getInputStream());
+		return IOUtils.toByteArray(m_file.getInputStream());
 		
 	}
 
 	public ObjectId PutFile(byte[] pdf_data) throws Exception {
 		
 		// get database write stream
-		GridFSInputFile write_stream = this.m_collection.createFile(pdf_data);
+		GridFSInputFile write_stream = m_collection.createFile(pdf_data);
 		
 		// set filename and save
-		write_stream.setFilename(this.m_filename + ".pdf");
+		write_stream.setFilename(m_file.getFilename() + ".pdf");
+		
+		// save the meta data with the file record
+		write_stream.put("metadata", m_file.get("metadata"));
+		
 		write_stream.save();
 		
 		// return new objectid
