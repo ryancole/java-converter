@@ -20,7 +20,7 @@ public class MongoManager {
 	public MongoManager() throws Exception {
 		
 		m_connection = new Mongo("127.0.0.1");
-		m_collection = new GridFS(m_connection.getDB("litigance"));
+		m_collection = new GridFS(m_connection.getDB("litigance"), "documents");
 		
 	}
 	
@@ -39,16 +39,22 @@ public class MongoManager {
 		// get database write stream
 		GridFSInputFile write_stream = m_collection.createFile(pdf_data);
 		
-		// set filename and save
+		// set document proprties and save
 		write_stream.setFilename(m_file.getFilename() + ".pdf");
-		
-		// save the meta data with the file record
-		write_stream.put("metadata", m_file.get("metadata"));
-		
+		write_stream.setContentType("application/pdf");
 		write_stream.save();
 		
-		// return new objectid
-		return new ObjectId(write_stream.getId().toString());
+		ObjectId pdf_id = new ObjectId(write_stream.getId().toString());
+		
+		// update native file record to include this new pdf id
+		DBObject metadata = m_file.getMetaData();
+		metadata.put("pdf", pdf_id);
+		
+		// save the meta data with the file record
+		m_file.put("metadata", metadata);
+		m_file.save();
+		
+		return pdf_id;
 
 	}
 
